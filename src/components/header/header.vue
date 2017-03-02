@@ -17,8 +17,28 @@
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
       </div>
+      <div v-if="seller.supports" class="support-count" @click="showDetail">
+        <span class="count">{{seller.supports.length}}个</span>
+        <i class="icon-keyboard_arrow_right"></i>
+      </div>
     </div>
-    <div class="bulletin-wrapper"></div>
+    <div class="bulletin-wrapper" @click="showDetail">
+      <span class="bulletin-title"></span><span class="bulletin-text">{{seller.bulletin}}</span>
+      <i class="icon-keyboard_arrow_right"></i>
+    </div>
+    <div class="background">
+      <img :src="seller.avatar" width="100%" />
+    </div>
+    <div v-show="detailShow" class="detail">
+      <div class="detail-wrapper clearfix">
+        <div class="detail-main">
+          <h1 class="name">{{ seller.name }}</h1>
+        </div>
+      </div>
+      <div class="detail-close">
+        <i class="icon-close"></i>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -27,6 +47,16 @@
     props: {
       seller: {
         type: Object
+      }
+    },
+    data() {
+      return {
+        detailShow: false
+      };
+    },
+    methods: {
+      showDetail() {
+        this.detailShow = true;
       }
     },
     created() {
