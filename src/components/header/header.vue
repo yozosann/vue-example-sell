@@ -13,7 +13,7 @@
           {{seller.description}}/{{seller.deliveryTime}}分钟送达
         </div>
         <div v-if="seller.supports" class="support">
-          <span class="icon" :class="classMap[seller.supports[0].type]"></span>
+          <icon class="icon" :size="12" :iconType="seller.supports[0].type" :colorType="1"></icon>
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
       </div>
@@ -29,20 +29,48 @@
     <div class="background">
       <img :src="seller.avatar" width="100%" />
     </div>
-    <div v-show="detailShow" class="detail">
-      <div class="detail-wrapper clearfix">
-        <div class="detail-main">
-          <h1 class="name">{{ seller.name }}</h1>
+    <transition name="fade">
+      <div v-show="detailShow" class="detail">
+        <div class="detail-wrapper clearfix">
+          <div class="detail-main">
+            <h1 class="name">{{ seller.name }}</h1>
+            <div class="star-wrapper">
+              <star :size="48" :score="seller.score"></star>
+            </div>
+            <div class="title-wrapper">
+              <detail-title :text="'优惠信息'" :styleObject="{
+                padding: '0 12px',fontSize:'14px',fontWidth:'700'}">
+                </detail-title>
+            </div>
+            <ul v-if="seller.supports" class="supports">
+              <li class="support-item" v-for="item in seller.supports">
+                <icon class="icon" :size="16" :iconType="item.type" :colorType="1"></icon>
+                <span class="text">{{item.description}}</span>
+              </li>
+            </ul>
+            <div class="title-wrapper">
+              <detail-title :text="'商家公告'" :styleObject="{
+                padding: '0 12px',fontSize:'14px',fontWidth:'700'}">
+                </detail-title>
+            </div>
+            <div class="bulletin">
+              <p class="content">{{ seller.bulletin }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="detail-close" @click="hideDetail">
+          <i class="icon-close"></i>
         </div>
       </div>
-      <div class="detail-close">
-        <i class="icon-close"></i>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 
 <script>
+  import star from 'components/star/star.vue';
+  import title from 'components/title/title.vue';
+  import icon from 'components/icon/icon.vue';
+
   export default {
     props: {
       seller: {
@@ -57,15 +85,20 @@
     methods: {
       showDetail() {
         this.detailShow = true;
+      },
+      hideDetail() {
+        this.detailShow = false;
       }
     },
-    created() {
-      this.classMap = ['decrease', 'discount', 'speical', 'invoice', 'guarantee'];
+    components: {
+      star,
+      'detail-title': title,
+      icon
     }
   };
 
 </script>
 
 <style lang="stylus">
-  @import '../../stylus/header/header.styl';
+  @import './header.styl';
 </style>

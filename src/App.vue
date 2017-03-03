@@ -32,7 +32,6 @@
         response = response.body;
         if (response.errno === ERR_OK) {
           this.seller = response.data;
-          console.log(this.seller);
         }
       });
     },
@@ -45,5 +44,5 @@
 </script>
 
 <style lang="stylus">
-  @import './stylus/App.styl';
+  @import './App.styl';
 </style>
