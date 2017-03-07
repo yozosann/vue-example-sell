@@ -31,7 +31,7 @@
               <span class="empty" @click="empty">清空</span>
             </div>
             <div class="list-content" ref="listContent">
-              <ul>
+              <ul class="list">
                 <li class="food border-1px" v-for="food in selectFoods">
                   <span class="name">{{food.name}}</span>
                   <div class="price">
@@ -144,24 +144,20 @@
     },
     methods: {
       beforeEnter(el) {
-        let count = this.balls.length;
-        while (count--) {
-          let ball = this.balls[count];
-          if (ball.show) {
-            let rect = ball.el.getBoundingClientRect();
-            let x = rect.left - 32;
-            let y = -(window.innerHeight - rect.top - 22);
-            el.style.display = '';
-            el.style.webkitTransform = `translate3d(0,${y}px,0)`;
-            el.style.transform = `translate3d(0,${y}px,0)`;
-            el.style.transition = 'all 0.4s cubic-bezier(0.49,-0.29,0.75,0.41)';
+        this.dropBalls.forEach((ball) => {
+          let rect = ball.el.getBoundingClientRect();
+          let x = rect.left - 32;
+          let y = -(window.innerHeight - rect.top - 22);
+          el.style.display = '';
+          el.style.webkitTransform = `translate3d(0,${y}px,0)`;
+          el.style.transform = `translate3d(0,${y}px,0)`;
+          el.style.transition = 'all 0.4s cubic-bezier(0.49,-0.29,0.75,0.41)';
 
-            let inner = el.getElementsByClassName('inner-hook')[0];
-            inner.style.webkitTransform = `translate3d(${x}px,0,0)`;
-            inner.style.transform = `translate3d(${x}px,0,0)`;
-            inner.style.transition = 'all 0.4s linear';
-          }
-        }
+          let inner = el.getElementsByClassName('inner-hook')[0];
+          inner.style.webkitTransform = `translate3d(${x}px,0,0)`;
+          inner.style.transform = `translate3d(${x}px,0,0)`;
+          inner.style.transition = 'all 0.4s linear';
+        });
       },
       // 此回调函数是可选项的设置
       // 与 CSS 结合时使用
