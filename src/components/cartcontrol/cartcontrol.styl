@@ -1,0 +1,39 @@
+.cartcontrol
+  font-size: 0
+  color: rgb(0, 160, 220)
+  .cart-decrease, .cart-add
+    display: inline-block
+    padding: 6px
+    line-height: 24px
+    font-size: 24px
+  .move-enter
+    transform: translateX(24px) rotate(180deg)
+    opacity: 0
+  .move-enter-active
+    transition: all 0.5s
+  .move-leave-active
+    transition: all 0.3s
+    transform: translateX(24px) rotate(180deg)
+    opacity: 0
+  .cart-count
+    display: inline-block
+    font-size: 10px
+    vertical-align: top
+    text-align: center
+    width: 12px
+    padding-top: 6px
+    line-height: 24px
+    color: rgb(147, 153, 159)
+    &.fade-enter
+      opacity: 0
+    &.fade-enter-active
+      transition: all 0.5s
+    &.fade-leave-active
+      transition: all 0.3s
+      opacity: 0
+  .cart-add
+    display: inline-block
+    padding: 6px
+    line-height: 24px
+    font-size: 24px
+  
