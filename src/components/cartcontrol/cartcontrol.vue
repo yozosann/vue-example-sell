@@ -25,9 +25,11 @@
         if (!event._constructed) {
           return;
         }
-
         this.ADD_CART(this.food);
-        this.BAll_JUMP(event.target);
+        // 优化动画效果
+        this.$nextTick(() => {
+          this.BAll_JUMP(event.target);
+        });
       },
       decreaseCart(event) {
         if (!event._constructed) {

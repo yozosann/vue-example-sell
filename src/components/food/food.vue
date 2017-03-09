@@ -114,8 +114,11 @@
         if (!event._constructed) {
           return;
         }
-        this.BAll_JUMP(event.target);
         this.ADD_FIRST(this.food);
+        // 优化动画效果
+        this.$nextTick(() => {
+          this.BAll_JUMP(event.target);
+        });
       },
       needShow(type, text) {
         if (this.activeOptions.onlyContent && !text) {
