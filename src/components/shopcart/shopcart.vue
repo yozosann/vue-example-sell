@@ -38,7 +38,7 @@
                     <span>¥{{food.price * food.count}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
-                    <cartcontrol :food="food" :father="father"></cartcontrol>
+                    <cartcontrol :food="food"></cartcontrol>
                   </div>
                 </li>
               </ul>
@@ -56,6 +56,7 @@
 <script>
   import cartcontrol from 'components/cartcontrol/cartcontrol.vue';
   import BScroll from 'better-scroll';
+  import { mapState } from 'vuex';
 
   export default {
     props: {
@@ -75,25 +76,10 @@
       },
       minPrice: {
         type: Number
-      },
-      father: {
-        type: Object
       }
     },
     data() {
       return {
-        balls: [{
-          show: false
-        }, {
-          show: false
-        }, {
-          show: false
-        }, {
-          show: false
-        }, {
-          show: false
-        }],
-        dropBalls: [],
         fold: true
       };
     },
@@ -140,7 +126,11 @@
           });
         }
         return show;
-      }
+      },
+      ...mapState([
+        'balls',
+        'dropBalls'
+      ])
     },
     methods: {
       beforeEnter(el) {
@@ -200,19 +190,6 @@
         // 跳转到订单详情，在此不继续下去了
         alert(`支付${this.totalPrice}元`);
       }
-    },
-    mounted() {
-      this.father.$on('cart.add', (el) => {
-        // 体验优化，异步执行下落动画
-        this.$nextTick(() => {
-          let ball = this.balls.find((ball) => {
-            return ball.show === false;
-          });
-          ball.show = true;
-          ball.el = el;
-          this.dropBalls.push(ball);
-        });
-      });
     },
     components: {
       cartcontrol

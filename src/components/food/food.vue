@@ -16,7 +16,7 @@
             <span class="now">¥{{food.price}}</span><span class="old" v-show="food.oldPrice">¥{{food.oldPrice}}</span>
           </div>
           <div class="cartcontrol-wrapper">
-            <cartcontrol :food="food" :father="father"></cartcontrol>
+            <cartcontrol :food="food"></cartcontrol>
           </div>
           <transition name="fade">
             <div @click.stop="addFirst" class="buy" v-show="!food.count || food.count===0 ">加入购物车</div>
@@ -58,7 +58,7 @@
   import cartcontrol from 'components/cartcontrol/cartcontrol.vue';
   import split from 'components/split/split.vue';
   import ratingselect from 'components/ratingselect/ratingselect.vue';
-  import Vue from 'vue';
+  import { mapMutations } from 'vuex';
 
   // const POSITIVE = 0;
   // const NEGATIVE = 1;
@@ -67,9 +67,6 @@
   export default {
     props: {
       food: {
-        type: Object
-      },
-      father: {
         type: Object
       }
     },
@@ -117,8 +114,8 @@
         if (!event._constructed) {
           return;
         }
-        this.father.$emit('cart.add', event.target);
-        Vue.set(this.food, 'count', 1);
+        this.BAll_JUMP(event.target);
+        this.ADD_FIRST(this.food);
       },
       needShow(type, text) {
         if (this.activeOptions.onlyContent && !text) {
@@ -129,7 +126,11 @@
         } else {
           return type === this.activeOptions.selectType;
         }
-      }
+      },
+      ...mapMutations([
+        'ADD_FIRST',
+        'BAll_JUMP'
+      ])
     },
     filters: {
       formatDate(time) {

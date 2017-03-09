@@ -28,7 +28,7 @@
                   <span class="now">¥{{food.price}}</span><span class="old" v-show="food.oldPrice">¥{{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="food" :father="self"></cartcontrol>
+                  <cartcontrol :food="food"></cartcontrol>
                 </div>
               </div>
             </li>
@@ -36,8 +36,8 @@
         </li>
       </ul>
     </div>
-    <shopcart :father="self" :selectFoods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
-    <food :food="selectedFood" :father="self" ref="food"></food>
+    <shopcart :selectFoods="$store.getters.selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <food :food="selectedFood" ref="food"></food>
   </div>
 </template>
 
@@ -47,6 +47,7 @@
   import shopcart from 'components/shopcart/shopcart.vue';
   import cartcontrol from 'components/cartcontrol/cartcontrol.vue';
   import food from 'components/food/food.vue';
+  import { mapMutations } from 'vuex';
 
   const ERR_OK = 0;
 
@@ -75,17 +76,6 @@
           }
         }
         return 0;
-      },
-      selectFoods() {
-        let foods = [];
-        this.goods.forEach((good) => {
-          good.foods.forEach((food) => {
-            if (food.count) {
-              foods.push(food);
-            }
-          });
-        });
-        return foods;
       }
     },
     created() {
@@ -93,6 +83,7 @@
         response = response.body;
         if (response.errno === ERR_OK) {
           this.goods = response.data;
+          this.INIT_STORE_GOODS(this.goods);
           this.$nextTick(() => {
             this._initScroll();
             this._calculateHeight();
@@ -139,7 +130,10 @@
         }
         this.selectedFood = food;
         this.$refs.food.show();
-      }
+      },
+      ...mapMutations([
+        'INIT_STORE_GOODS'
+      ])
     },
     components: {
       icon,

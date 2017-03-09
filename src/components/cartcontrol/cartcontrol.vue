@@ -12,39 +12,34 @@
 </template>
 
 <script>
-  import Vue from 'vue';
+  import { mapMutations } from 'vuex';
 
   export default {
     props: {
       food: {
         type: Object
-      },
-      father: {
-        type: Object
       }
-    },
-    created() {
     },
     methods: {
       addCart(event) {
         if (!event._constructed) {
           return;
         }
-        if (!this.food.count) {
-          Vue.set(this.food, 'count', 1);
-        } else {
-          this.food.count++;
-        }
-        this.father.$emit('cart.add', event.target);
+
+        this.ADD_CART(this.food);
+        this.BAll_JUMP(event.target);
       },
       decreaseCart(event) {
         if (!event._constructed) {
           return;
         }
-        if (this.food.count) {
-          this.food.count--;
-        }
-      }
+        this.DECREASE_CART(this.food);
+      },
+      ...mapMutations([
+        'ADD_CART',
+        'DECREASE_CART',
+        'BAll_JUMP'
+      ])
     }
   };
 
